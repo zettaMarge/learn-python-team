@@ -336,3 +336,61 @@ def test_nested_list_comprehensions():
         (3, 7, 11),
         (4, 8, 12),
     ]
+
+
+def test_list_sorting():
+    """A more comprehensive test of list sorting"""
+    # By default, we sort lists using the list.sort() method, which does so in ascending order.
+    # In the case of numbers, the comparison is straightforward enough:
+    numberList = [19, 54, 6, 23, 1, 16, 10]
+    numberList.sort()
+    assert numberList == [1, 6, 10, 16, 19, 23, 54]
+
+    # For strings, the comparison is done using each character's ASCII value
+    # as well as the positional index at which the character is found in the string.
+    # This means that lowercase character are by default "greater" than uppercase characters.
+    stringList = ['TOaD', 'Goomba', 'goomba', 'a', 'Aa', 'aA', 'TOAD', 'AAAA', 'A']
+    stringList.sort()
+    assert stringList == ['A', 'AAAA', 'Aa', 'Goomba', 'TOAD', 'TOaD', 'a', 'aA', 'goomba']
+
+    # ---
+
+    # The sort method also has 2 optional parameters: 'reverse' and 'key'.
+    # 'reverse' is a boolean flag that lets you sort a list in descending order.
+    numberList.sort(reverse=True)
+    assert numberList == [54, 23, 19, 16, 10, 6, 1]
+
+    stringList.sort(reverse=True)
+    assert stringList == ['goomba', 'aA', 'a', 'TOaD', 'TOAD', 'Goomba', 'Aa', 'AAAA', 'A']
+
+
+    # 'key' accepts a function by which each value in the list is sorted with.
+    # For example, we can instead sort strings by their length instead, on a first-come-first-served basis.
+    def stringLength(s):
+        return len(s)
+        
+    stringList = ['goomba', 'aA', 'a', 'TOaD', 'TOAD', 'Goomba', 'Aa', 'AAAA', 'A', 'a']
+    stringList.sort(key=stringLength)
+    assert stringList == ['a', 'A', 'a', 'aA', 'Aa', 'TOaD', 'TOAD', 'AAAA', 'goomba', 'Goomba']
+
+    # ---
+
+    # Lists can also be sorted using the sorted(list) function, which returns a new list
+    # without altering the original one.
+    originalList = ['a', 'A', 'AAAA', 'Aa', 'Goomba', 'TOAD', 'TOaD', 'a', 'aA', 'goomba']
+    newList = sorted(originalList)
+    assert originalList == ['a', 'A', 'AAAA', 'Aa', 'Goomba', 'TOAD', 'TOaD', 'a', 'aA', 'goomba']
+    assert newList == ['A', 'AAAA', 'Aa', 'Goomba', 'TOAD', 'TOaD', 'a', 'a', 'aA', 'goomba']
+
+    # This function also has optional 'reverse' and 'key' parameters, which are used in the
+    # same way as with the list.sort() method.
+    newListReversed = sorted(newList, reverse=True)
+    assert newList == ['A', 'AAAA', 'Aa', 'Goomba', 'TOAD', 'TOaD', 'a', 'a', 'aA', 'goomba']
+    assert newListReversed == ['goomba', 'aA', 'a', 'a', 'TOaD', 'TOAD', 'Goomba', 'Aa', 'AAAA', 'A']
+
+    originalList2 = ['goomba', 'aA', 'a', 'TOaD', 'TOAD', 'Goomba', 'Aa', 'AAAA', 'A', 'a']
+    listByKey = sorted(originalList2, key=stringLength)
+    assert originalList2 == ['goomba', 'aA', 'a', 'TOaD', 'TOAD', 'Goomba', 'Aa', 'AAAA', 'A', 'a']
+    assert listByKey == ['a', 'A', 'a', 'aA', 'Aa', 'TOaD', 'TOAD', 'AAAA', 'goomba', 'Goomba']
+
+    # ---
