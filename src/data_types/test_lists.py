@@ -398,7 +398,7 @@ def test_list_sorting():
 
 def test_list_filtering():
     """A more comprehensive test of list filtering"""
-    # The filter(func, list) returns a list of values that fit a specific criteria
+    # The filter(func, list) returns a **filter object** of values that fit a specific criteria
     # without altering the original one.
     # The means by which the values are filtered can be defined as function returning a boolean, as such:
     def filterFunc(e):
@@ -407,12 +407,14 @@ def test_list_filtering():
     originalList = [1,2,3,4,5,6,7,8,9]
     evenList = filter(filterFunc, originalList)
     assert originalList == [1,2,3,4,5,6,7,8,9]
-    assert evenList == [2,4,6,8]
+
+    # To assert the equality properly, the filter object must be cast as a list.
+    assert list(evenList) == [2,4,6,8]
 
     # Alternatively, it can be defined as a lambda expressing inside the filter() call itself
     oddList = filter(lambda x: x % 2 != 0, originalList)
     assert originalList == [1,2,3,4,5,6,7,8,9]
-    assert oddList == [1,3,5,7,9]
+    assert list(oddList) == [1,3,5,7,9]
 
     # ---
 
